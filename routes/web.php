@@ -20,3 +20,15 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::prefix('admin')->group(function(){
+    // /admin
+    Route::get("/", function(){
+        return view("admin.index");
+    });
+    // /admin/users
+    Route::get("/users", function(){
+        return view("admin.usuarios.lista");
+    });
+
+});
