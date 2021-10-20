@@ -9,6 +9,12 @@
             <div class="card-body">
                 <h5 class="card-title">
                     Lista de usuarios
+                    <br>
+                    @auth
+                        <p>{{ Auth::user()->email }}</p>
+                    @else
+                      no esta logueado 
+                    @endauth
                 </h5>
             </div>
         </div>

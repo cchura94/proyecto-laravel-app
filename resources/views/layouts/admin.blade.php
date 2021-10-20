@@ -173,7 +173,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->email }}</a>
+            @auth
+            <a href="#" class="d-block">{{ Auth::user()->email }}</a>
+            
+            <hr>
+            <form action="{{route('logout')}}" method="post">
+              @csrf
+              <input type="submit" class="btn btn-danger" value="Cerrar Sesion">
+            </form>
+            @endauth
         </div>
       </div>
 
@@ -198,7 +206,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Starter Pages
+                Aministrador
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -206,26 +214,99 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <li class="nav-item">
                 <a href="#" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Active Page</p>
+                  <p>INICIO</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Inactive Page</p>
+                  <p>Dashboard</p>
                 </a>
               </li>
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('categoria.index') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Simple Link
+                Categoria
                 <span class="right badge badge-danger">New</span>
               </p>
             </a>
           </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link ">
+              <i class="nav-icon fas fa-cubes"></i>
+              <p>
+                Gestión Producto
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('producto.create') }}" class="nav-link ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Nuevo Producto</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('producto.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Lista Productos</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link ">
+              <i class="nav-icon fas fa-user-check"></i>
+              <p>
+                Gestión Clientes
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('cliente.create') }}" class="nav-link ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Nuevo Cliente</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('cliente.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Lista Clientes</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+           <li class="nav-item">
+            <a href="#" class="nav-link ">
+              <i class="nav-icon fas fa-chart-area"></i>
+              <p>
+                Gestión Pedidos
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('pedido.index') }}" class="nav-link ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Lista Pedidos</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('pedido.create') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Nuevo Pedido</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
