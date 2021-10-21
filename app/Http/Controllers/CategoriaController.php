@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Categoria;
 
 class CategoriaController extends Controller
 {
@@ -13,7 +14,8 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        return view("admin.producto.categoria.index");
+        $lista_categorias = Categoria::all();
+        return view("admin.producto.categoria.index", compact("lista_categorias"));
     }
 
     /**
@@ -34,7 +36,17 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validar
+        $request->validate([
+            "nombre" => "required|unique:categorias"
+        ]);
+        // guardar
+        $categoria = new Categoria();
+        $categoria->nombre = $request->nombre;
+        $categoria->detalle = $request->detalle;
+        $categoria->save();
+        // responder o redireccionar
+        return redirect("/admin/categoria")->with("mensaje", "Categoria Registrada");
     }
 
     /**
@@ -68,7 +80,12 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $categoria = Categoria::find($id);
+        $categoria->nombre = $request->nombre;
+        $categoria->detalle = $request->detalle;
+        $categoria->save();
+        // responder o redireccionar
+        return redirect("/admin/categoria")->with("mensaje", "Categoria Modificada");
     }
 
     /**
@@ -79,6 +96,9 @@ class CategoriaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $categoria = Categoria::find($id);
+        $categoria->delete();
+
+        return redirect("/admin/categoria")->with("mensaje", "Categoria Eliminada"); 
     }
 }
