@@ -225,15 +225,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="{{ route('categoria.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Categoria
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
 
           <li class="nav-item">
             <a href="#" class="nav-link ">
@@ -244,6 +235,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </a>
             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('categoria.index') }}" class="nav-link ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Categoria</p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="{{ route('producto.create') }}" class="nav-link ">
                   <i class="far fa-circle nav-icon"></i>
