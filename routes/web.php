@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ProveedorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,7 @@ Route::middleware(["auth"])->prefix('admin')->group(function(){
     Route::resource("/producto", ProductoController::class);
     Route::resource("/cliente", ClienteController::class);
     Route::resource("/pedido", PedidoController::class);
+    Route::resource("/proveedor", ProveedorController::class);
 
 
 });

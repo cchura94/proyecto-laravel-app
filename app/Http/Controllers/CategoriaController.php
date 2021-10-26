@@ -14,7 +14,7 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        $lista_categorias = Categoria::all();
+        $lista_categorias = Categoria::get();
         return view("admin.producto.categoria.index", compact("lista_categorias"));
     }
 

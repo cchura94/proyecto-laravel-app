@@ -258,6 +258,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
           <li class="nav-item">
             <a href="#" class="nav-link ">
+              <i class="nav-icon fas fa-cubes"></i>
+              <p>
+                Gestión Proveedor
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              
+              <li class="nav-item">
+                <a href="{{ route('proveedor.create') }}" class="nav-link ">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Nuevo Proveedor</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('proveedor.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Lista Proveedor</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link ">
               <i class="nav-icon fas fa-user-check"></i>
               <p>
                 Gestión Clientes

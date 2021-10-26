@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
+use App\Models\Categoria;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
@@ -14,7 +15,9 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        return view("admin.producto.listar");
+        
+        $lista_productos = Producto::get();
+        return view("admin.producto.listar", compact("lista_productos"));
     }
 
     /**
@@ -24,7 +27,8 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        return view("admin.producto.nuevo");
+        $lista_categorias = Categoria::all();
+        return view("admin.producto.nuevo", compact("lista_categorias"));
     }
 
     /**
@@ -35,7 +39,26 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validar
+
+        // subir la imagen
+        $nombre_imagen = "";
+        if($file = $request->file("imagen")){
+            $nombre_imagen = time()."-".$file->getClientOriginalName();
+            $file->move("imagenes", $nombre_imagen);
+        }
+
+        // guardar datos
+        $producto = new Producto;
+        $producto->nombre = $request->nombre;
+        $producto->precio = $request->precio;
+        $producto->stock = $request->stock;
+        $producto->descripcion = $request->descripcion;
+        $producto->categoria_id = $request->categoria_id;
+        $producto->imagen = $nombre_imagen;
+        $producto->save();
+        // redireccionar
+        return redirect("/admin/producto")->with("mensaje", "Producto Registrado");
     }
 
     /**
@@ -57,7 +80,8 @@ class ProductoController extends Controller
      */
     public function edit(Producto $producto)
     {
-        //
+        $lista_categorias = Categoria::all();
+        return view("admin.producto.editar", compact("producto", "lista_categorias"));
     }
 
     /**
@@ -69,7 +93,23 @@ class ProductoController extends Controller
      */
     public function update(Request $request, Producto $producto)
     {
-        //
+        $producto->nombre = $request->nombre;
+        $producto->precio = $request->precio;
+        $producto->stock = $request->stock;
+        $producto->descripcion = $request->descripcion;
+        $producto->categoria_id = $request->categoria_id;
+
+        $nombre_imagen = "";
+        if($file = $request->file("imagen")){
+            $nombre_imagen = time()."-".$file->getClientOriginalName();
+            $file->move("imagenes", $nombre_imagen);
+            $producto->imagen = $nombre_imagen;
+        }
+        
+        $producto->save();
+        // redireccionar
+        return redirect("/admin/producto")->with("mensaje", "Producto Registrado");
+    
     }
 
     /**
@@ -80,6 +120,8 @@ class ProductoController extends Controller
      */
     public function destroy(Producto $producto)
     {
-        //
+        $producto->delete();
+        return redirect("/admin/producto")->with("mensaje", "Producto Eliminado");
+    
     }
 }

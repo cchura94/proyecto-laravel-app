@@ -14,7 +14,8 @@ class ProveedorController extends Controller
      */
     public function index()
     {
-        //
+        $lista_proveedores = Proveedor::get();
+        return view("admin.proveedor.listar", compact("lista_proveedores"));
     }
 
     /**
@@ -24,7 +25,7 @@ class ProveedorController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.proveedor.nuevo");
     }
 
     /**
@@ -35,7 +36,17 @@ class ProveedorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validar
+        //guardar
+        $proveedor = new Proveedor;
+        $proveedor->nombre = $request->nombre;
+        $proveedor->nit = $request->nit;
+        $proveedor->telefono_contacto = $request->telefono_contacto;
+        $proveedor->nombre_contacto = $request->nombre_contacto;
+        $proveedor->direccion = $request->direccion;
+        $proveedor->save();
+        // redireccionar
+        return redirect("/admin/proveedor")->with("mensaje", "Proveedor registrado");
     }
 
     /**
