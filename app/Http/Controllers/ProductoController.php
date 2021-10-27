@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use App\Models\Categoria;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
@@ -17,7 +18,8 @@ class ProductoController extends Controller
     {
         
         $lista_productos = Producto::get();
-        return view("admin.producto.listar", compact("lista_productos"));
+         $lista_proveedores = Proveedor::all();
+        return view("admin.producto.listar", compact("lista_productos", "lista_proveedores"));
     }
 
     /**
@@ -28,6 +30,7 @@ class ProductoController extends Controller
     public function create()
     {
         $lista_categorias = Categoria::all();
+       
         return view("admin.producto.nuevo", compact("lista_categorias"));
     }
 
@@ -123,5 +126,21 @@ class ProductoController extends Controller
         $producto->delete();
         return redirect("/admin/producto")->with("mensaje", "Producto Eliminado");
     
+    }
+
+    public function aumentarProductos(Request $request, $id)
+    {
+        $cantidad = $request->cantidad;
+        $proveedor_id = $request->proveedor_id;
+        // actualizar el stock del producto
+        $producto = Producto::find($id);
+        $producto->stock =$producto->stock + $cantidad;
+        $producto->save();
+
+        // registrar al proveedor + la cantidad que está asignando
+        // N:M
+        $producto->proveedores()->attach($proveedor_id, ["cantidad" => $cantidad]);
+        
+        return redirect()->back()->with("mensaje", "Se agregaron + Producto");
     }
 }

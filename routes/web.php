@@ -37,6 +37,7 @@ Route::middleware(["auth"])->prefix('admin')->group(function(){
     });
 
     // nuevas rutas
+    Route::post('/producto/{id}/aumentar-productos', [ProductoController::class, 'aumentarProductos'])->name('aumentar-productos');
     
     // /admin/categoria
     Route::resource("/categoria", CategoriaController::class);
