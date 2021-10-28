@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pedido;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
 class PedidoController extends Controller
@@ -14,7 +15,9 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        //
+        
+        $pedidos = Pedido::paginate(10);
+        return view("admin.pedido.lista", compact("pedidos"));
     }
 
     /**
@@ -24,7 +27,8 @@ class PedidoController extends Controller
      */
     public function create()
     {
-        //
+        $lista_productos = Producto::all();
+        return view("admin.pedido.nuevo", compact("lista_productos"));
     }
 
     /**
