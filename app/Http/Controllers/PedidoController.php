@@ -39,7 +39,12 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // guardar el pedido
+        $pedido = new Pedido;
+        
+        // asignar los productos al pedido
+
+        // guardar
     }
 
     /**

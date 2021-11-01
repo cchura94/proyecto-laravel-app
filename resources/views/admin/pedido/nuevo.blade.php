@@ -46,13 +46,22 @@
 <script>
     // carrito
     let carrito = [];
+    let cliente_id;
 
     function adicionarCarrito(prod){
         prod = JSON.parse(prod);
-
-        let producto = {id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: 1};
-        carrito.push(producto);
-
+        let sw = 0;
+        for (let i = 0; i < carrito.length; i++) {
+          const prod_carrito = carrito[i];
+          if(prod_carrito.id == prod.id){
+            sw=1;
+            prod_carrito.cantidad = prod_carrito.cantidad + 1
+          }          
+        }
+        if(sw==0){
+          let producto = {id: prod.id, nombre: prod.nombre, precio: prod.precio, cantidad: 1};
+          carrito.push(producto);
+        }
         actualizarCarrito();
     }
 
@@ -71,8 +80,10 @@
                             </td>
                         </tr>
             `;
-            total += parseFloat(element.precio);  
+            total += parseFloat((element.precio * element.cantidad));  
+            
         }
+        total = total.toFixed(2)
         document.getElementById("carrito").innerHTML = html;
         document.getElementById("total").innerHTML = total
     }
@@ -82,8 +93,45 @@
         actualizarCarrito();
     }
 
-</script>
+    async function buscarCliente(){
+      document.getElementById("buscar").innerHTML = "Buscando..."
+      console.log(document.getElementById("valor").value)
+      let {data} = await axios.get("/api/admin/buscar_cliente");
+      if(Object.keys(data).length === 0){
+        document.getElementById("buscar").innerHTML = "Cliente NO ENCONTRADO"
+      }
+    }
 
+    async function guardarCliente(){
+      nombre_completo = document.getElementById("nombre_completo").value
+      ci_nit = document.getElementById("ci_nit").value
+      telefono = document.getElementById("telefono").value
+      correo = document.getElementById("correo").value
+
+      let datos_cliente = {
+        nombre_completo: nombre_completo,
+        ci_nit: ci_nit,
+        telefono: telefono,
+        correo: correo
+      }
+      const {data} = await axios.post("/api/admin/cliente", datos_cliente);
+      console.log(data)
+      document.getElementById("cliente").innerHTML = data.cliente.ci_nit
+      document.getElementById("buscar").innerHTML = data.mensaje
+      cliente_id = data.cliente.id;
+    }
+
+    async function realizarPedido(){
+      let datos = {
+        productos = carrito,
+        cliente_id = cliente_id,        
+      }
+      const {data} = await axios.post("/api/admin/pedido", datos);
+      
+    }
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 @endsection
 
 @section("contenido")
@@ -149,7 +197,67 @@
                         
                     </tbody>
                 </table>
-                <h2>TOTAL: Bs. <span id="total"></span></h2>
+                <h2> TOTAL: Bs. <span id="total"></span></h2>
+                <hr>
+
+                <table class="table">
+                <tr>
+                  <td>
+                    <h5>CI/NIT: <span id="cliente"></span></h5>
+                    <strong><span id="buscar"></span></strong>
+                  </td>
+                </tr>
+                  <tr>
+                  <label for="">Buscar CI o NIT</label>
+                    <td><input type="text" id="valor" class="form-control" placeholder="ci / nit" onkeyup="buscarCliente()"></td>
+                  </tr>
+                  <tr>
+                    <td>
+
+                    <!-- Button trigger modal -->
+<button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#Modal">
+Nuevo Cliente
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <label for="">Nombre Completo</label>
+      <input type="text" class="form-control" id="nombre_completo">
+      <label for="">CI / NIT</label>
+      <input type="text" class="form-control" id="ci_nit">
+      <label for="">Telefono</label>
+      <input type="text" class="form-control" id="telefono">
+      <label for="">Correo</label>
+      <input type="email" class="form-control" id="correo">    
+
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="guardarCliente()">Guardar Cliente</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+                    </td>
+                  </tr>
+                  <tr>
+                  <td>
+                    <button class="btn btn-success btn-block" onclick="realizarPedido()">Realizar Pedido</button>
+                  </td>
+                  </tr>
+                </table>
             </div>
         </div>
     </div>

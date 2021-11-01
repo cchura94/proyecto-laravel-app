@@ -17,6 +17,24 @@ class ClienteController extends Controller
         //
     }
 
+    public function buscar(Request $request)
+    {
+        $cliente = Cliente::where('ci_nit', 'like', '%'.$request->valor.'%')->first();
+        return response()->json($cliente);
+    }
+
+    public function guardarCliente(Request $request)
+    {
+        $cliente = new Cliente;
+        $cliente->nombre_completo = $request->nombre_completo;
+        $cliente->ci_nit = $request->ci_nit; 
+        $cliente->telefono = $request->telefono; 
+        $cliente->correo = $request->correo;
+        $cliente->save();
+
+        return response()->json(["mensaje" => "Cliente Registrado", "cliente" => $cliente]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
