@@ -95,10 +95,15 @@
 
     async function buscarCliente(){
       document.getElementById("buscar").innerHTML = "Buscando..."
-      console.log(document.getElementById("valor").value)
-      let {data} = await axios.get("/api/admin/buscar_cliente");
+      let valor = document.getElementById("valor").value
+      let {data} = await axios.get("/api/admin/buscar_cliente?valor="+valor);
       if(Object.keys(data).length === 0){
+        document.getElementById("cliente").innerHTML = ""
         document.getElementById("buscar").innerHTML = "Cliente NO ENCONTRADO"
+      }else{
+        cliente_id = data.id
+        document.getElementById("cliente").innerHTML = data.ci_nit
+        document.getElementById("buscar").innerHTML = "ENCONTRADO"
       }
     }
 
@@ -122,12 +127,14 @@
     }
 
     async function realizarPedido(){
+      let personal_id = document.getElementById("personal_id").value 
       let datos = {
-        productos = carrito,
-        cliente_id = cliente_id,        
+        productos: carrito,
+        cliente_id: cliente_id,
+        user_id: personal_id        
       }
       const {data} = await axios.post("/api/admin/pedido", datos);
-      
+      console.log(data);
     }
 
 </script>
@@ -140,6 +147,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
+            <input type="hidden" id="personal_id" value="{{Auth::user()->id}}">
                 <h3>CORREO PERSONAL: {{Auth::user()->email}}</h3>
             </div>
         </div>

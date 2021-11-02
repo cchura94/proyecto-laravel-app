@@ -25,6 +25,7 @@ class ClienteController extends Controller
 
     public function guardarCliente(Request $request)
     {
+        
         $cliente = new Cliente;
         $cliente->nombre_completo = $request->nombre_completo;
         $cliente->ci_nit = $request->ci_nit; 
